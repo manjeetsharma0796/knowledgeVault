@@ -2,7 +2,7 @@
 
 import { FC, useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { HiPaperAirplane } from "react-icons/hi"; 
+import { HiPaperAirplane } from "react-icons/hi";
 import Image from "next/image";
 
 const Home: FC = () => {
@@ -31,7 +31,7 @@ const Home: FC = () => {
             setInputText("");
 
             try {
-                const response = await fetch('http://127.0.0.1:5000/chat_gen', {
+                const response = await fetch('http://127.0.0.1:8000/chat_gen', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: inputText }),
@@ -64,9 +64,9 @@ const Home: FC = () => {
 
                 {/* Chatbot */}
                 <div className="fixed right-8 bottom-8 w-[420px] h-[calc(100%-6rem-30px)] rounded-lg p-6 flex flex-col bg-gray-900 bg-opacity-90 backdrop-blur-lg border border-teal-400 shadow-lg transition-transform duration-300 hover:scale-105"
-                     style={{
-                         boxShadow: '0 0 20px rgba(0, 204, 204, 0.8), 0 0 30px rgba(0, 204, 204, 0.7), 0 0 40px rgba(0, 204, 204, 0.6)',
-                     }}>
+                    style={{
+                        boxShadow: '0 0 20px rgba(0, 204, 204, 0.8), 0 0 30px rgba(0, 204, 204, 0.7), 0 0 40px rgba(0, 204, 204, 0.6)',
+                    }}>
                     <h2 className="text-xl font-bold text-white mb-4">Ask:</h2>
                     <div ref={chatRef} className="flex-grow overflow-y-auto bg-white/10 p-4 rounded-lg mb-4 backdrop-blur-md">
                         {/* Chat Messages */}
@@ -83,6 +83,11 @@ const Home: FC = () => {
                             type="text"
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSendMessage();
+                                }
+                            }}
                             className="flex-grow p-3 border rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-shadow duration-200"
                             placeholder="Type your message..."
                         />
